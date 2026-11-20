@@ -1,6 +1,6 @@
 # Insurance Claim Prediction: ML Pipeline with MLOps
 
-An end-to-end machine learning project for **SafeDrive Insurance Ltd.** that predicts whether a policyholder will file a claim, from policy, vehicle and safety features. It goes beyond modelling and covers hyperparameter tuning, automated feature generation, experiment tracking, model versioning, drift monitoring and explainability.
+An end-to-end machine learning project for **SafeDrive Insurance Ltd.** that predicts whether a policyholder will file a claim, from policy, vehicle and safety features. It goes beyond modelling and covers hyperparameter tuning, automated feature generation, experiment tracking, model versioning, drift monitoring and explainability, and ends with a **Power BI dashboard** that turns the model's predictions into a risk view for the business.
 
 ## Problem
 SafeDrive's claim payouts are rising, and manual underwriting is inconsistent. The goal is to find the factors linked to claim risk and build a model that flags higher-risk policies.
@@ -39,8 +39,22 @@ Key preprocessing steps: parsed power and torque text into numbers, dropped redu
 
 **Monitoring:** Evidently found **no data drift** between train and test (0 of 53 features, and 0 of 20 in the final model).
 
+## Power BI Dashboard: Claim Risk Analysis
+The model's predictions (a claim probability and risk level for each policy) are loaded into Power BI so non-technical stakeholders can explore risk without reading code.
+
+**Page 1: Insurance Claim Risk Analysis**
+- KPIs: **58.59K** policies, **3.75K** claims, **6.40%** claim rate, **2.93K high-risk customers**, average NCAP rating **1.76**.
+- Policies are segmented into Low, Medium, High and Very High risk. Most fall in Low and Medium, and the High and Very High groups together are roughly 3K policies.
+- A box-and-whisker plot shows predicted claim probability by risk level, so the bands separate cleanly: Very High policies sit around 0.6–0.7, while Low policies sit mostly below 0.5.
+
+**Page 2: Vehicle Safety Features and Claim Rate**
+- **Speed alert:** claim rate is about **6%** with a speed alert vs about **4%** without.
+- **NCAP safety rating:** claim rate stays in a narrow band of about 6–7% across ratings 0 to 5, so the rating alone barely separates claim risk.
+
+Built with DAX measures (claim rate, high-risk customers, average NCAP rating) and a custom box-and-whisker visual. Files are in `dashboard/` (`.pbix` and a PDF export).
+
 ## Tech Stack
-Python · pandas · scikit-learn · statsmodels · Optuna · MLflow · Featuretools · Evidently · SHAP · joblib · matplotlib · seaborn
+Python · pandas · scikit-learn · statsmodels · Optuna · MLflow · Featuretools · Evidently · SHAP · joblib · matplotlib · seaborn · Power BI (DAX)
 
 ## Run It
 ```bash
@@ -50,6 +64,14 @@ pip install -r requirements.txt
 jupyter notebook
 ```
 Run the notebooks in order (01, 02, 03). The raw dataset is not included: put it in the project folder as `dataset.csv` before running notebook 01. Notebooks 02 and 03 read `Cleaned_df.csv`, which notebook 01 creates.
+
+## Repository Structure
+```
+├── notebooks/        # 01 preprocessing and EDA, 02 modelling, 03 AutoML and versioning
+├── dashboard/        # Power BI report (.pbix) and PDF export
+├── requirements.txt
+└── README.md
+```
 
 ## Author
 **Anju Kanwar**
